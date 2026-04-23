@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact – Calculatrice</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: url('e.jpg') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: brightness(0.9);
+       -webkit-backdrop-filter: brightness(0.9);
+      color: white;
+    }
+
+    .main-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 50px;
+      gap: 30px;
+    }
+
+    .info-box {
+      flex: 1;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      padding: 30px;
+    }
+
+    .form-container {
+      flex: 1;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      color: #212529;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      font-weight: bold;
+    }
+
+    label {
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background-color: #ffc107;
+      border: none;
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background-color: #e0a800;
+    }
+
+    .confirmation {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #d4edda;
+      color: #155724;
+      font-weight: bold;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container">
+  <!-- Partie coordonnées -->
+  <div class="info-box">
+    <h4>NOS COORDONNÉES</h4>
+    <p><strong>Adresse :</strong> Arrêt kipasa, commune de LEMBA, VILLE DE KINSHASA</p>
+    <p><strong>Téléphone :</strong> <a href="tel:+243826407422" class="text-warning">+243826407422</a></p>
+    <p><strong>Email :</strong> <a href="mailto:rlubanda@gmail.com" class="text-warning">rlubanda@gmail.com</a></p>
+    <p><strong>notre disponibilité :</strong></p>
+    <ul>
+      <li>Du lundi au vendredi : de  21h30 à 1h30</li>
+      <li>Samedi : journée ouverte aux échanges avec tout le monde</li>
+      <li>Dimanche : 8h30 à 15h30</li>
+    </ul>
+    <p>vos remarques, suggestions, questions ou Autre nous faira plaisir et nous sommes impatient pour vous lire et nous amelliorer</p>
+  </div>
+
+  <!-- Partie formulaire -->
+  <div class="form-container">
+    <h2 class="text-center mb-3">Contactez-nous</h2>
+    <p class="text-center text-muted mb-4">
+      N'hésitez pas à nous faire part de vos suggestions, remarques, questions, problèmes ou félicitations.
+    </p>
+
+    <form id="contactForm" onsubmit="return validerFormulaire();">
+      <div class="mb-3">
+        <label for="nom" class="form-label">Nom complet</label>
+        <input type="text" class="form-control" id="nom" placeholder="Votre nom" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Adresse e-mail</label>
+        <input type="email" class="form-control" id="email" placeholder="rlubanda@gmail.com" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="typeMessage" class="form-label">Type de message</label>
+        <select class="form-select" id="typeMessage" required>
+          <option value="">Choisissez...</option>
+          <option value="Suggestion">Suggestion</option>
+          <option value="Remarque">Remarque</option>
+          <option value="Question">Question</option>
+          <option value="Problème rencontré">Problème rencontré</option>
+          <option value="Félicitations">Nous féliciter</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" id="message" rows="4" placeholder="Écrivez votre message ici..." required></textarea>
+      </div>
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Envoyer le message</button>
+      </div>
+    </form>
+
+    <div id="confirmationMessage" class="confirmation text-center">
+      Merci pour votre message ! Nous vous répondrons dès que possible.
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="message recu.html" class="btn btn-outline-dark">Voir les messages reçus</a>
+    </div>
+  </div>
+</div>
+
+<div class="text-center mt-5">
+  <a href="acceuil.html" class="btn btn-light">Retour à l'accueil</a>
+</div>
+<script>
+  function validerFormulaire() {
+    const nom = document.getElementById("nom").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const typeMessage = document.getElementById("typeMessage").value;
+    const message = document.getElementById("message").value.trim();
+    const confirmation = document.getElementById("confirmationMessage");
+
+    if (!nom || !email || !typeMessage || !message) {
+      alert("Veuillez remplir tous les champs.");
+      return false;
+    }
+
+    const nouveauMessage = {
+      nom: nom,
+      email: email,
+      type: typeMessage,
+      contenu: message,
+      date: new Date().toLocaleString()
+    };
+
+    let messages = JSON.parse(localStorage.getItem("messagesCalculatrice")) || [];
+    messages.push(nouveauMessage);
+    localStorage.setItem("messagesCalculatrice", JSON.stringify(messages));
+
+    document.getElementById("contactForm").reset();
+    confirmation.style.display = "block";
+    setTimeout(() => {
+      confirmation.style.display = "none";
+    }, 5000);
+
+    return false;
+  }
+</script>
+
+</body>
+</html>
